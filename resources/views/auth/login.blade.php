@@ -36,7 +36,7 @@
     Belum punya akun? <a href="{{ route('register') }}">Daftar Sekarang</a>
 </div>
 
-<div style="margin-top: 24px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 16px;">
+<!-- <div style="margin-top: 24px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 16px;">
     <p style="font-size: 12px; color: #64748B; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px;">Demo Akun</p>
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
         <div style="background: rgba(79,70,229,.1); border-radius: 8px; padding: 10px;">
@@ -49,6 +49,6 @@
             <p style="font-size: 11px; color: #94A3B8;">murid@ujian.com</p>
             <p style="font-size: 11px; color: #94A3B8;">password</p>
         </div>
-    </div>
+    </div> -->
 </div>
 @endsection

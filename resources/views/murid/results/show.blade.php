@@ -57,20 +57,16 @@
     {{-- Answers Review --}}
     <h3 style="font-size:16px; font-weight:700; margin-bottom:16px">Tinjauan Jawaban</h3>
     @foreach($session->answers as $index => $answer)
-    <div class="card" style="margin-bottom:16px; border-left:4px solid {{ $answer->question->question_type === 'essay' ? (($answer->grading_status === 'pending') ? '#F59E0B' : ($answer->is_correct ? '#34D399' : '#F87171')) : ($answer->is_correct ? '#34D399' : '#F87171') }}">
+    <div class="card" style="margin-bottom:16px; border-left:4px solid var(--border)">
         <div style="display:flex; justify-content:space-between; margin-bottom:12px">
             <span style="font-size:12px; font-weight:700; color:var(--text-muted)">SOAL #{{ $index + 1 }}</span>
             @if($answer->question->question_type === 'essay')
-                <span class="badge {{ $answer->grading_status === 'pending' ? 'badge-yellow' : ($answer->is_correct ? 'badge-green' : 'badge-red') }}" style="background:{{ $answer->grading_status === 'pending' ? 'rgba(245,158,11,0.2); border:1px solid rgba(245,158,11,0.5); color:#FCD34D' : '' }}">
-                    @if($answer->grading_status === 'pending')
-                        JAWABAN SUDAH DIKIRIM
-                    @else
-                        {{ $answer->is_correct ? 'BENAR' : 'SALAH' }}
-                    @endif
+                <span class="badge badge-yellow" style="background:rgba(245,158,11,0.2); border:1px solid rgba(245,158,11,0.5); color:#FCD34D">
+                    JAWABAN SUDAH DIKIRIM
                 </span>
             @else
-                <span class="badge {{ $answer->is_correct ? 'badge-green' : 'badge-red' }}">
-                    {{ $answer->is_correct ? 'BENAR' : 'SALAH' }}
+                <span class="badge" style="background:rgba(156,163,175,0.2); border:1px solid rgba(156,163,175,0.3); color:#9CA3AF">
+                    JAWABAN SUDAH DIKIRIM
                 </span>
             @endif
         </div>
@@ -81,31 +77,17 @@
             <div style="display:grid; grid-template-columns:1fr; gap:8px">
                 @foreach($answer->question->options as $option)
                     <div style="padding:10px 14px; border-radius:8px; font-size:13px; display:flex; align-items:center; gap:10px; 
-                        @if($option->id == $answer->option_id)
-                            @if($answer->is_correct)
-                                background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.2); color:#34D399;
-                            @else
-                                background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); color:#F87171;
-                            @endif
-                        @elseif($option->is_correct)
-                            background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.1); color:#34D399; border-style:dashed;
-                        @else
-                            background:rgba(255,255,255,0.02); border:1px solid var(--border); color:var(--text-muted);
-                        @endif
+                        background:rgba(255,255,255,0.02); border:1px solid var(--border); color:var(--text-muted);
                     ">
-                        @if($option->id == $answer->option_id)
-                            <i class="fas {{ $answer->is_correct ? 'fa-check-circle' : 'fa-times-circle' }}"></i>
-                        @else
-                            <i class="far fa-circle"></i>
-                        @endif
+                        <i class="far fa-circle"></i>
                         {{ $option->option_text }}
                     </div>
                 @endforeach
             </div>
         @else
             {{-- Essay Answer Display --}}
-            <div style="padding:16px; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:8px; font-size:14px; line-height:1.6">
-                {!! nl2br(e($answer->essay_answer)) !!}
+            <div style="padding:16px; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:8px; font-size:14px; line-height:1.6; color:var(--text-muted); font-style:italic">
+                Jawaban telah dikirim dan akan dinilai oleh guru
             </div>
         @endif
     </div>

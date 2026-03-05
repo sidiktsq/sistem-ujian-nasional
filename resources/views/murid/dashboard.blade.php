@@ -68,15 +68,27 @@
                 </div>
             @else
                 @foreach($mySessions as $session)
+                @php
+                    $hasPendingGrading = $session->answers->contains(function($answer) {
+                        return $answer->grading_status === 'pending';
+                    });
+                @endphp
                 <div style="margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center">
                     <div>
                         <div style="font-size:13px; font-weight:600">{{ $session->exam->title }}</div>
                         <div style="font-size:11px; color:var(--text-muted); margin-top:2px">{{ $session->submitted_at->diffForHumans() }}</div>
                     </div>
-                    <div style="text-align:right">
-                        <div style="font-size:16px; font-weight:800; color:{{ $session->score >= 70 ? '#34D399' : '#F87171' }}">{{ number_format($session->score, 0) }}</div>
-                        <span class="badge {{ $session->score >= 70 ? 'badge-green' : 'badge-red' }}" style="font-size:9px; padding:1px 6px">{{ $session->grade }}</span>
-                    </div>
+                    @if($hasPendingGrading)
+                        <div style="text-align:right">
+                            <div style="font-size:16px; font-weight:800; color:#9CA3AF">Menunggu</div>
+                            <span class="badge" style="font-size:9px; padding:1px 6px; background:rgba(156,163,175,0.2); border:1px solid rgba(156,163,175,0.3); color:#9CA3AF">DINILAI</span>
+                        </div>
+                    @else
+                        <div style="text-align:right">
+                            <div style="font-size:16px; font-weight:800; color:{{ $session->score >= 70 ? '#34D399' : '#F87171' }}">{{ number_format($session->score, 0) }}</div>
+                            <span class="badge {{ $session->score >= 70 ? 'badge-green' : 'badge-red' }}" style="font-size:9px; padding:1px 6px">{{ $session->grade }}</span>
+                        </div>
+                    @endif
                 </div>
                 @endforeach
                 <a href="{{ route('murid.results.index') }}" style="display:block; text-align:center; font-size:12px; color:#818CF8; text-decoration:none; margin-top:10px; font-weight:600">LIHAT SEMUA HASIL</a>

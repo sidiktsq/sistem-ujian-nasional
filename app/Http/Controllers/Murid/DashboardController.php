@@ -18,15 +18,24 @@ class DashboardController extends Controller
             ->get();
 
         $mySessions = ExamSession::where('user_id', $murid->id)
-            ->with('exam')
+            ->with(['exam', 'answers.question'])
             ->where('status', 'submitted')
             ->latest('submitted_at')
             ->take(5)
             ->get();
 
         $totalUjian = ExamSession::where('user_id', $murid->id)->where('status', 'submitted')->count();
-        $avgScore = ExamSession::where('user_id', $murid->id)->where('status', 'submitted')->avg('score') ?? 0;
-        $bestScore = ExamSession::where('user_id', $murid->id)->where('status', 'submitted')->max('score') ?? 0;
+        
+        // Only calculate scores for sessions that are fully graded
+        $gradedSessions = ExamSession::where('user_id', $murid->id)
+            ->where('status', 'submitted')
+            ->whereDoesntHave('answers', function($query) {
+                $query->where('grading_status', 'pending');
+            })
+            ->get();
+            
+        $avgScore = $gradedSessions->avg('score') ?? 0;
+        $bestScore = $gradedSessions->max('score') ?? 0;
 
         return view('murid.dashboard', compact(
             'availableExams', 'mySessions', 'totalUjian', 'avgScore', 'bestScore'

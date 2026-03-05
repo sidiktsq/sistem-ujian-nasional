@@ -25,12 +25,27 @@
                 </thead>
                 <tbody>
                     @foreach($sessions as $session)
+                    @php
+                        $hasPendingGrading = $session->answers->contains(function($answer) {
+                            return $answer->grading_status === 'pending';
+                        });
+                    @endphp
                     <tr>
                         <td>
                             <div style="font-weight:600">{{ $session->exam->title }}</div>
                             <div style="font-size:11px; color:var(--text-muted)">{{ $session->total_points }} Total Poin</div>
                         </td>
                         <td>{{ $session->submitted_at->format('d M Y, H:i') }}</td>
+                        @if($hasPendingGrading)
+                        <td>
+                            <div style="font-size:18px; font-weight:800; color:#9CA3AF">
+                                Menunggu
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge" style="background:rgba(156,163,175,0.2); border:1px solid rgba(156,163,175,0.3); color:#9CA3AF">DINILAI</span>
+                        </td>
+                        @else
                         <td>
                             <div style="font-size:18px; font-weight:800; color:{{ $session->score >= 70 ? '#34D399' : '#F87171' }}">
                                 {{ number_format($session->score, 0) }}
@@ -39,6 +54,7 @@
                         <td>
                             <span class="badge {{ $session->score >= 70 ? 'badge-green' : 'badge-red' }}">{{ $session->grade }}</span>
                         </td>
+                        @endif
                         <td style="text-align:right">
                             <a href="{{ route('murid.results.show', $session) }}" class="btn btn-secondary btn-sm">
                                 <i class="fas fa-eye"></i> Detail

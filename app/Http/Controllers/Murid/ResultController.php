@@ -11,7 +11,7 @@ class ResultController extends Controller
     public function index()
     {
         $sessions = ExamSession::where('user_id', Auth::id())
-            ->with('exam')
+            ->with(['exam', 'answers.question'])
             ->where('status', 'submitted')
             ->latest('submitted_at')
             ->paginate(10);
