@@ -85,8 +85,8 @@
 <div class="auth-container">
     <div class="auth-logo">
         <div class="icon"><i class="fas fa-graduation-cap" style="color:#fff"></i></div>
-        <h1>ExamPro</h1>
-        <p>Sistem Ujian Online Modern</p>
+        <h1>Ujian Nasional</h1>
+        <p>Sistem Ujian Online</p>
     </div>
     @yield('content')
 </div>

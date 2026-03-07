@@ -8,35 +8,59 @@
 @endsection
 
 @section('content')
-{{-- Stat Cards --}}
+{{-- Stat Cards Circular --}}
 <div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(79,70,229,.15);color:#818CF8"><i class="fas fa-file-alt"></i></div>
-        <div>
-            <div class="stat-value">{{ $totalUjian }}</div>
-            <div class="stat-label">Total Ujian</div>
+    <div class="stat-card-circular">
+        <div class="circular-progress">
+            <svg width="120" height="120">
+                <circle class="background" cx="60" cy="60" r="52"></circle>
+                <circle class="progress" cx="60" cy="60" r="52" 
+                        style="stroke: #818CF8; stroke-dasharray: 326.73; stroke-dashoffset: {{ 326.73 - (326.73 * min($totalUjian / 10, 1)) }};">
+                </circle>
+            </svg>
+            <div class="text" style="color: #818CF8">{{ $totalUjian }}</div>
         </div>
+        <div class="stat-label-circular">Total Ujian</div>
+        <div class="stat-sublabel-circular">Statistik Mengajar</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(16,185,129,.15);color:#34D399"><i class="fas fa-check-circle"></i></div>
-        <div>
-            <div class="stat-value">{{ $ujianAktif }}</div>
-            <div class="stat-label">Ujian Aktif</div>
+    <div class="stat-card-circular">
+        <div class="circular-progress">
+            <svg width="120" height="120">
+                <circle class="background" cx="60" cy="60" r="52"></circle>
+                <circle class="progress" cx="60" cy="60" r="52" 
+                        style="stroke: #34D399; stroke-dasharray: 326.73; stroke-dashoffset: {{ 326.73 - (326.73 * min($ujianAktif / max($totalUjian, 1), 1)) }};">
+                </circle>
+            </svg>
+            <div class="text" style="color: #34D399">{{ $ujianAktif }}</div>
         </div>
+        <div class="stat-label-circular">Ujian Aktif</div>
+        <div class="stat-sublabel-circular">Statistik Mengajar</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(245,158,11,.15);color:#FCD34D"><i class="fas fa-users"></i></div>
-        <div>
-            <div class="stat-value">{{ $totalSesi }}</div>
-            <div class="stat-label">Total Peserta</div>
+    <div class="stat-card-circular">
+        <div class="circular-progress">
+            <svg width="120" height="120">
+                <circle class="background" cx="60" cy="60" r="52"></circle>
+                <circle class="progress" cx="60" cy="60" r="52" 
+                        style="stroke: #FCD34D; stroke-dasharray: 326.73; stroke-dashoffset: {{ 326.73 - (326.73 * min($totalSesi / 50, 1)) }};">
+                </circle>
+            </svg>
+            <div class="text" style="color: #FCD34D">{{ $totalSesi }}</div>
         </div>
+        <div class="stat-label-circular">Total Peserta</div>
+        <div class="stat-sublabel-circular">Statistik Siswa</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(239,68,68,.15);color:#F87171"><i class="fas fa-trophy"></i></div>
-        <div>
-            <div class="stat-value">{{ $selesai }}</div>
-            <div class="stat-label">Ujian Selesai</div>
+    <div class="stat-card-circular">
+        <div class="circular-progress">
+            <svg width="120" height="120">
+                <circle class="background" cx="60" cy="60" r="52"></circle>
+                <circle class="progress" cx="60" cy="60" r="52" 
+                        style="stroke: #F87171; stroke-dasharray: 326.73; stroke-dashoffset: {{ 326.73 - (326.73 * min($selesai / max($totalSesi, 1), 1)) }};">
+                </circle>
+            </svg>
+            <div class="text" style="color: #F87171">{{ $selesai }}</div>
         </div>
+        <div class="stat-label-circular">Ujian Selesai</div>
+        <div class="stat-sublabel-circular">Statistik Siswa</div>
     </div>
 </div>
 

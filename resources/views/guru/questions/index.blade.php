@@ -2,7 +2,7 @@
 @section('page-title', 'Kelola Soal: ' . $exam->title)
 
 @section('topbar-actions')
-    <a href="{{ route('guru.exams.questions.create', $exam) }}" class="btn btn-primary btn-sm">
+   <a href="{{ route('guru.exams.questions.create', $exam) }}" class="btn btn-primary btn-sm">
         <i class="fas fa-plus"></i> Tambah Soal
     </a>
 @endsection
@@ -18,9 +18,11 @@
             <i class="fas fa-question-circle" style="font-size:48px;margin-bottom:16px;display:block;color:#334155"></i>
             <p style="font-size:16px;font-weight:600;margin-bottom:8px">Belum ada soal</p>
             <p style="font-size:14px;margin-bottom:20px">Tambahkan soal pertama untuk ujian ini</p>
-            <a href="{{ route('guru.exams.questions.create', $exam) }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Tambah Soal Pertama
-            </a>
+            <div style="display:flex; gap:10px; justify-content:center">               
+            <a href="{{ route('guru.exams.questions.bulk-create', $exam) }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Buat Soal
+                </a>
+            </div>
         </div>
     @else
         @foreach($questions as $index => $question)

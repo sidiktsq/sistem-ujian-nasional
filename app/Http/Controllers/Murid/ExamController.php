@@ -42,7 +42,7 @@ class ExamController extends Controller
     {
         abort_unless($exam->is_active, 403);
 
-        // Cek apakah sudah pernah submit
+        
         $submitted = ExamSession::where('exam_id', $exam->id)
             ->where('user_id', Auth::id())
             ->where('status', 'submitted')
@@ -53,7 +53,7 @@ class ExamController extends Controller
                 ->with('error', 'Anda sudah mengerjakan ujian ini.');
         }
 
-        // Cek sesi yang masih berjalan
+       
         $session = ExamSession::where('exam_id', $exam->id)
             ->where('user_id', Auth::id())
             ->where('status', 'in_progress')
@@ -113,7 +113,7 @@ class ExamController extends Controller
                         }
                     }
                 } else {
-                    // Essay type - tidak di-grade otomatis
+                    
                     $essayAnswer = $answerValue;
                     $gradingStatus = 'pending';
                 }

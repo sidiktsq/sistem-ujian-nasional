@@ -5,9 +5,11 @@ use App\Http\Controllers\Guru\DashboardController as GuruDashboard;
 use App\Http\Controllers\Guru\ExamController as GuruExamController;
 use App\Http\Controllers\Guru\QuestionController as GuruQuestionController;
 use App\Http\Controllers\Guru\ResultController as GuruResultController;
+use App\Http\Controllers\Guru\ProfileController as GuruProfile;
 use App\Http\Controllers\Murid\DashboardController as MuridDashboard;
 use App\Http\Controllers\Murid\ExamController as MuridExamController;
 use App\Http\Controllers\Murid\ResultController as MuridResultController;
+use App\Http\Controllers\Murid\ProfileController as MuridProfile;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root ke login
@@ -39,6 +41,12 @@ Route::prefix('guru')
     // Dashboard
     Route::get('/dashboard', [GuruDashboard::class, 'index'])->name('dashboard');
 
+    // Profile
+    Route::get('/profile', [GuruProfile::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [GuruProfile::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [GuruProfile::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [GuruProfile::class, 'updatePassword'])->name('profile.password');
+
     // Ujian (Exam) CRUD
     Route::resource('exams', GuruExamController::class);
 
@@ -49,6 +57,8 @@ Route::prefix('guru')
             Route::get('/', [GuruQuestionController::class, 'index'])->name('index');
             Route::get('/create', [GuruQuestionController::class, 'create'])->name('create');
             Route::post('/', [GuruQuestionController::class, 'store'])->name('store');
+            Route::get('/bulk-create', [GuruQuestionController::class, 'bulkCreate'])->name('bulk-create');
+            Route::post('/bulk-store', [GuruQuestionController::class, 'bulkStore'])->name('bulk-store');
             Route::get('/{question}/edit', [GuruQuestionController::class, 'edit'])->name('edit');
             Route::put('/{question}', [GuruQuestionController::class, 'update'])->name('update');
             Route::delete('/{question}', [GuruQuestionController::class, 'destroy'])->name('destroy');
@@ -68,6 +78,12 @@ Route::prefix('murid')
 
     // Dashboard
     Route::get('/dashboard', [MuridDashboard::class, 'index'])->name('dashboard');
+
+    // Profile
+    Route::get('/profile', [MuridProfile::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [MuridProfile::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [MuridProfile::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [MuridProfile::class, 'updatePassword'])->name('profile.password');
 
     // Ujian
     Route::get('/exams', [MuridExamController::class, 'index'])->name('exams.index');

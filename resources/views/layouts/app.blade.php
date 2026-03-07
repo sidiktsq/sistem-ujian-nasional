@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
+        /* Cache bust: {{ time() }} */
         :root {
             --guru-primary: #4F46E5;
             --guru-secondary: #6366F1;
@@ -148,8 +149,96 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 20px;
-            display: flex; align-items: flex-start; gap: 16px;
+            display: flex; align-items: center; gap: 16px;
         }
+        
+        /* ── Circular Progress Stats ── */
+        .stat-card-circular {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card-circular:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .circular-progress {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 16px;
+        }
+        .circular-progress svg {
+            transform: rotate(-90deg);
+        }
+        .circular-progress .background {
+            fill: none;
+            stroke: rgba(255,255,255,0.1);
+            stroke-width: 8;
+        }
+        .circular-progress .progress {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease-in-out;
+            animation: progressAnimation 1.5s ease-in-out;
+        }
+        
+        @keyframes progressAnimation {
+            from {
+                stroke-dashoffset: 326.73;
+            }
+        }
+        .circular-progress .text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: 800;
+        }
+        .stat-label-circular {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .stat-sublabel-circular {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        /* ── Alternative Circular Progress (CSS only) ── */
+        .progress-ring {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 16px;
+        }
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        .progress-ring__background {
+            stroke: rgba(255,255,255,0.1);
+        }
+        .progress-ring__progress {
+            stroke-linecap: round;
+        }
+        .progress-ring__text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: 800;
+        }
+        
+        /* ── Legacy Stats (for backward compatibility) ── */
         .stat-icon {
             width: 48px; height: 48px; border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
@@ -270,8 +359,8 @@
                 <i class="fas fa-graduation-cap"></i>
             </div>
             <div class="logo-text">
-                ExamPro
-                <small>Sistem Ujian Online</small>
+                Ujian Nasional
+                <small>Yang Pake AI Sing Burut</small>
             </div>
         </div>
     </div>
@@ -295,6 +384,10 @@
             <a href="{{ route('guru.exams.index') }}" class="nav-item {{ request()->routeIs('guru.exams.*') ? 'active' : '' }}" style="{{ request()->routeIs('guru.exams.*') ? 'color:#818CF8; background:rgba(79,70,229,.15)' : '' }}">
                 <i class="fas fa-file-alt"></i> Kelola Ujian
             </a>
+            <div class="nav-section">Pengaturan</div>
+            <a href="{{ route('guru.profile.show') }}" class="nav-item {{ request()->routeIs('guru.profile.*') ? 'active' : '' }}" style="{{ request()->routeIs('guru.profile.*') ? 'color:#818CF8; background:rgba(79,70,229,.15)' : '' }}">
+                <i class="fas fa-user"></i> Profil Saya
+            </a>
         @else
             <div class="nav-section">Menu Utama</div>
             <a href="{{ route('murid.dashboard') }}" class="nav-item {{ request()->routeIs('murid.dashboard') ? 'active' : '' }}" style="{{ request()->routeIs('murid.dashboard') ? 'color:#34D399; background:rgba(5,150,105,.15)' : '' }}">
@@ -305,6 +398,10 @@
             </a>
             <a href="{{ route('murid.results.index') }}" class="nav-item {{ request()->routeIs('murid.results.*') ? 'active' : '' }}" style="{{ request()->routeIs('murid.results.*') ? 'color:#34D399; background:rgba(5,150,105,.15)' : '' }}">
                 <i class="fas fa-trophy"></i> Nilai Saya
+            </a>
+            <div class="nav-section">Pengaturan</div>
+            <a href="{{ route('murid.profile.show') }}" class="nav-item {{ request()->routeIs('murid.profile.*') ? 'active' : '' }}" style="{{ request()->routeIs('murid.profile.*') ? 'color:#34D399; background:rgba(5,150,105,.15)' : '' }}">
+                <i class="fas fa-user"></i> Profil Saya
             </a>
         @endif
     </nav>

@@ -65,6 +65,55 @@ class QuestionController extends Controller
             ->with('success', 'Soal berhasil ditambahkan.');
     }
 
+    public function bulkCreate(Exam $exam)
+    {
+        $this->authorizeExam($exam);
+        return view('guru.questions.bulk-create', compact('exam'));
+    }
+
+    public function bulkStore(Request $request, Exam $exam)
+    {
+        $this->authorizeExam($exam);
+
+        $data = $request->validate([
+            'questions' => 'required|array|min:1',
+            'questions.*.question_text' => 'required|string',
+            'questions.*.question_type' => 'required|in:multiple_choice,essay',
+            'questions.*.points' => 'required|integer|min:1',
+            'questions.*.options' => 'required_if:questions.*.question_type,multiple_choice|array|min:2',
+            'questions.*.options.*' => 'required_if:questions.*.question_type,multiple_choice|string',
+            'questions.*.correct_option' => 'required_if:questions.*.question_type,multiple_choice|integer',
+        ]);
+
+        DB::transaction(function () use ($exam, $data) {
+            foreach ($data['questions'] as $index => $questionData) {
+                $order = $exam->questions()->max('order') + $index + 1;
+
+                $question = Question::create([
+                    'exam_id' => $exam->id,
+                    'question_text' => $questionData['question_text'],
+                    'question_type' => $questionData['question_type'],
+                    'points' => $questionData['points'],
+                    'order' => $order,
+                ]);
+
+                if ($questionData['question_type'] === 'multiple_choice') {
+                    foreach ($questionData['options'] as $optionIndex => $optionText) {
+                        Option::create([
+                            'question_id' => $question->id,
+                            'option_text' => $optionText,
+                            'is_correct' => ($optionIndex == $questionData['correct_option']),
+                            'order' => $optionIndex + 1,
+                        ]);
+                    }
+                }
+            }
+        });
+
+        return redirect()->route('guru.exams.questions.index', $exam)
+            ->with('success', count($data['questions']) . ' soal berhasil ditambahkan.');
+    }
+
     public function edit(Exam $exam, Question $question)
     {
         $this->authorizeExam($exam);

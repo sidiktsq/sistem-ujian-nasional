@@ -2,28 +2,52 @@
 @section('page-title', 'Dashboard Murid')
 
 @section('content')
-{{-- Stat Cards --}}
+{{-- Stat Cards Circular --}}
 <div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(5,150,105,.15);color:#34D399"><i class="fas fa-check-double"></i></div>
-        <div>
-            <div class="stat-value">{{ $totalUjian }}</div>
-            <div class="stat-label">Ujian Selesai</div>
+    <div class="stat-card-circular">
+        <div class="circular-progress">
+            <svg width="120" height="120">
+                <circle class="background" cx="60" cy="60" r="52"></circle>
+                <circle class="progress" cx="60" cy="60" r="52" 
+                        stroke="#34D399"
+                        stroke-dasharray="326.73"
+                        stroke-dashoffset="{{ 326.73 - (326.73 * min($totalUjian / 10, 1)) }}">
+                </circle>
+            </svg>
+            <div class="text" style="color: #34D399">{{ $totalUjian }}</div>
         </div>
+        <div class="stat-label-circular">Ujian Selesai</div>
+        <div class="stat-sublabel-circular">Statistik Siswa</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(79,70,229,.15);color:#818CF8"><i class="fas fa-star"></i></div>
-        <div>
-            <div class="stat-value">{{ number_format($avgScore, 0) }}</div>
-            <div class="stat-label">Rata-rata Nilai</div>
+    <div class="stat-card-circular">
+        <div class="circular-progress">
+            <svg width="120" height="120">
+                <circle class="background" cx="60" cy="60" r="52"></circle>
+                <circle class="progress" cx="60" cy="60" r="52" 
+                        stroke="#818CF8"
+                        stroke-dasharray="326.73"
+                        stroke-dashoffset="{{ 326.73 - (326.73 * min($avgScore / 100, 1)) }}">
+                </circle>
+            </svg>
+            <div class="text" style="color: #818CF8">{{ number_format($avgScore, 0) }}</div>
         </div>
+        <div class="stat-label-circular">Rata-rata Nilai</div>
+        <div class="stat-sublabel-circular">Statistik Siswa</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(245,158,11,.15);color:#FCD34D"><i class="fas fa-award"></i></div>
-        <div>
-            <div class="stat-value">{{ number_format($bestScore, 0) }}</div>
-            <div class="stat-label">Nilai Tertinggi</div>
+    <div class="stat-card-circular">
+        <div class="circular-progress">
+            <svg width="120" height="120">
+                <circle class="background" cx="60" cy="60" r="52"></circle>
+                <circle class="progress" cx="60" cy="60" r="52" 
+                        stroke="#FCD34D"
+                        stroke-dasharray="326.73"
+                        stroke-dashoffset="{{ 326.73 - (326.73 * min($bestScore / 100, 1)) }}">
+                </circle>
+            </svg>
+            <div class="text" style="color: #FCD34D">{{ number_format($bestScore, 0) }}</div>
         </div>
+        <div class="stat-label-circular">Nilai Tertinggi</div>
+        <div class="stat-sublabel-circular">Statistik Siswa</div>
     </div>
 </div>
 

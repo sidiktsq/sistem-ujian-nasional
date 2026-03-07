@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('student_answers', function (Blueprint $table) {
-            $table->string('grading_status')->default('pending')->comment('pending, graded'); // for essays only
+            $table->string('grading_status')->default('pending')->comment('pending, graded'); 
             $table->foreignId('graded_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamp('graded_at')->nullable();
         });
