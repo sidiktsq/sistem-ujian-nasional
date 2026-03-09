@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\SystemController as AdminSystemController;
+use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboard;
 use App\Http\Controllers\Guru\ExamController as GuruExamController;
 use App\Http\Controllers\Guru\QuestionController as GuruQuestionController;
@@ -16,9 +20,10 @@ use Illuminate\Support\Facades\Route;
 // Redirect root ke login
 Route::get('/', function () {
     if (auth()->check()) {
-        return auth()->user()->isGuru()
-            ? redirect()->route('guru.dashboard')
-            : redirect()->route('murid.dashboard');
+        $user = auth()->user();
+        return $user->role === 'admin' 
+            ? redirect()->route('admin.dashboard')
+            : ($user->isGuru() ? redirect()->route('guru.dashboard') : redirect()->route('murid.dashboard'));
     }
     return redirect()->route('login');
 });
@@ -36,6 +41,34 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+// ─── Admin Routes ────────────────────────────────────────────
+Route::prefix('admin')
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.')
+    ->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+    
+    // Users Management
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+    Route::post('/users/{user}/toggle-role', [AdminUserController::class, 'toggleRole'])->name('users.toggle-role');
+    
+    // System Management
+    Route::get('/system', [AdminSystemController::class, 'index'])->name('system.index');
+    Route::post('/system/clear-cache', [AdminSystemController::class, 'clearCache'])->name('system.clear-cache');
+    Route::post('/system/migrate', [AdminSystemController::class, 'migrate'])->name('system.migrate');
+    
+    // Profile
+    Route::get('/profile', [AdminProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [AdminProfileController::class, 'updatePassword'])->name('profile.password');
+});
 
 // ─── Guru Routes ────────────────────────────────────────────
 Route::prefix('guru')

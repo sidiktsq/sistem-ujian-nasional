@@ -74,7 +74,9 @@ class AuthController extends Controller
 
     private function redirectByRole(User $user)
     {
-        if ($user->isGuru()) {
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->isGuru()) {
             return redirect()->route('guru.dashboard');
         }
         return redirect()->route('murid.dashboard');

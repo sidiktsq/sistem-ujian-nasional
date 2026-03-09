@@ -355,7 +355,17 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
         <div class="logo">
-            <div class="logo-icon" style="background: {{ $role === 'guru' ? 'rgba(79,70,229,.2)' : 'rgba(5,150,105,.2)' }}; color: {{ $role === 'guru' ? '#818CF8' : '#34D399' }}">
+            <div class="logo-icon" style="background: 
+                @if($role === 'admin') rgba(239,68,68,.2)
+                @elseif($role === 'guru') rgba(79,70,229,.2)
+                @else rgba(5,150,105,.2)
+                @endif
+                ; color: 
+                @if($role === 'admin') #F87171
+                @elseif($role === 'guru') #818CF8
+                @else #34D399
+                @endif
+                ">
                 <i class="fas fa-graduation-cap"></i>
             </div>
             <div class="logo-text">
@@ -366,7 +376,17 @@
     </div>
 
     <div class="sidebar-user">
-        <div class="avatar" style="background: {{ $role === 'guru' ? 'rgba(79,70,229,.25)' : 'rgba(5,150,105,.25)' }}; color: {{ $role === 'guru' ? '#818CF8' : '#34D399' }}">
+        <div class="avatar" style="background: 
+            @if($role === 'admin') rgba(239,68,68,.25)
+            @elseif($role === 'guru') rgba(79,70,229,.25)
+            @else rgba(5,150,105,.25)
+            @endif
+            ; color: 
+            @if($role === 'admin') #F87171
+            @elseif($role === 'guru') #818CF8
+            @else #34D399
+            @endif
+            ">
             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
         </div>
         <div class="user-info">
@@ -376,7 +396,23 @@
     </div>
 
     <nav class="sidebar-nav">
-        @if($role === 'guru')
+        @if($role === 'admin')
+            <div class="nav-section">Dashboard</div>
+            <a href="{{ route('admin.dashboard') }}" class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" style="{{ request()->routeIs('admin.dashboard') ? 'color:#F87171; background:rgba(239,68,68,.15)' : '' }}">
+                <i class="fas fa-chart-pie"></i> Dashboard
+            </a>
+            <div class="nav-section">Manajemen</div>
+            <a href="{{ route('admin.users.index') }}" class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" style="{{ request()->routeIs('admin.users.*') ? 'color:#F87171; background:rgba(239,68,68,.15)' : '' }}">
+                <i class="fas fa-users"></i> Kelola User
+            </a>
+            <a href="{{ route('admin.system.index') }}" class="nav-item {{ request()->routeIs('admin.system.*') ? 'active' : '' }}" style="{{ request()->routeIs('admin.system.*') ? 'color:#F87171; background:rgba(239,68,68,.15)' : '' }}">
+                <i class="fas fa-cog"></i> Pengaturan Sistem
+            </a>
+            <div class="nav-section">Pengaturan</div>
+            <a href="{{ route('admin.profile.show') }}" class="nav-item {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}" style="{{ request()->routeIs('admin.profile.*') ? 'color:#F87171; background:rgba(239,68,68,.15)' : '' }}">
+                <i class="fas fa-user"></i> Profil Saya
+            </a>
+        @elseif($role === 'guru')
             <div class="nav-section">Menu Utama</div>
             <a href="{{ route('guru.dashboard') }}" class="nav-item {{ request()->routeIs('guru.dashboard') ? 'active' : '' }}" style="{{ request()->routeIs('guru.dashboard') ? 'color:#818CF8; background:rgba(79,70,229,.15)' : '' }}">
                 <i class="fas fa-chart-pie"></i> Dashboard

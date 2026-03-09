@@ -61,7 +61,9 @@ class GoogleController extends Controller
     private function redirectRoute()
     {
         $user = Auth::user();
-        if ($user->role === 'guru') {
+        if ($user->role === 'admin') {
+            return route('admin.dashboard');
+        } elseif ($user->role === 'guru') {
             return route('guru.dashboard');
         } else {
             return route('murid.dashboard');
