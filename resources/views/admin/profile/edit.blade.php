@@ -34,32 +34,6 @@
         </div>
     </form>
 
-    <form method="POST" action="{{ route('admin.profile.password') }}" style="margin-top: 24px;">
-        @csrf
-        <div class="card">
-            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 20px;">Ubah Password</h3>
-            
-            <div class="form-group">
-                <label class="form-label">Password Saat Ini</label>
-                <input type="password" name="current_password" class="form-control" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Password Baru</label>
-                <input type="password" name="password" class="form-control" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Konfirmasi Password Baru</label>
-                <input type="password" name="password_confirmation" class="form-control" required>
-            </div>
-            
-            <div style="margin-top: 24px;">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-lock"></i> Ubah Password
-                </button>
-            </div>
-        </div>
-    </form>
+
 </div>
 @endsection

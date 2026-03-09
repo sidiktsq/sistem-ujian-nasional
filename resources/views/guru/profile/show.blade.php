@@ -11,9 +11,13 @@
 <div style="max-width:800px">
     <div class="card">
         <div style="display:flex; align-items:center; gap:24px; margin-bottom:32px">
-            <div style="width:120px; height:120px; background:linear-gradient(135deg, var(--guru-primary), rgba(129,140,248,0.8)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:48px; font-weight:700; color:white">
-                {{ strtoupper(substr($user->name, 0, 2)) }}
-            </div>
+            @if($user->avatar)
+                <img src="{{ $user->avatar }}?t={{ time() }}" alt="{{ $user->name }}" style="width:120px; height:120px; border-radius:50%; object-fit:cover; border: 4px solid var(--card);">
+            @else
+                <div style="width:120px; height:120px; background:linear-gradient(135deg, var(--guru-primary), rgba(129,140,248,0.8)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:48px; font-weight:700; color:white">
+                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                </div>
+            @endif
             <div>
                 <h2 style="font-size:24px; font-weight:700; margin-bottom:8px">{{ $user->name }}</h2>
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px">
@@ -69,18 +73,7 @@
             </div>
         </div>
 
-        <div style="margin-top:32px; padding-top:24px; border-top:1px solid var(--border)">
-            <h4 style="font-size:16px; font-weight:700; margin-bottom:16px">Keamanan</h4>
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:16px; background:rgba(255,255,255,0.02); border-radius:8px; border:1px solid var(--border)">
-                <div>
-                    <div style="font-weight:600; margin-bottom:4px">Password</div>
-                    <div style="font-size:12px; color:var(--text-muted)">Terakhir diubah: {{ $user->updated_at->diffForHumans() }}</div>
-                </div>
-                <a href="{{ route('guru.profile.edit') }}#password" class="btn btn-secondary btn-sm">
-                    <i class="fas fa-key"></i> Ubah Password
-                </a>
-            </div>
-        </div>
+
     </div>
 </div>
 @endsection

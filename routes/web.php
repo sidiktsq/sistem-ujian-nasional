@@ -38,6 +38,8 @@ Route::middleware('guest')->group(function () {
     // Google Authentication
     Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('auth.google');
     Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('auth.google.callback');
+    Route::get('/auth/google/complete', [GoogleController::class, 'complete'])->name('auth.google.complete');
+    Route::post('/auth/google/complete', [GoogleController::class, 'storeComplete'])->name('auth.google.complete.store');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
@@ -66,8 +68,12 @@ Route::prefix('admin')
     // Profile
     Route::get('/profile', [AdminProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
-    Route::put('/profile/password', [AdminProfileController::class, 'updatePassword'])->name('profile.password');
+    Route::get('/profile/settings', [AdminProfileController::class, 'settings'])->name('profile.settings');
+    Route::post('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [AdminProfileController::class, 'updatePassword'])->name('profile.change-password');
+    Route::post('/profile/upload-avatar', [AdminProfileController::class, 'uploadAvatar'])->name('profile.upload-avatar');
+    Route::post('/profile/remove-avatar', [AdminProfileController::class, 'removeAvatar'])->name('profile.remove-avatar');
+    Route::delete('/profile', [AdminProfileController::class, 'deleteAccount'])->name('profile.delete');
 });
 
 // ─── Guru Routes ────────────────────────────────────────────
@@ -82,8 +88,12 @@ Route::prefix('guru')
     // Profile
     Route::get('/profile', [GuruProfile::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [GuruProfile::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [GuruProfile::class, 'update'])->name('profile.update');
-    Route::put('/profile/password', [GuruProfile::class, 'updatePassword'])->name('profile.password');
+    Route::get('/profile/settings', [GuruProfile::class, 'settings'])->name('profile.settings');
+    Route::post('/profile', [GuruProfile::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [GuruProfile::class, 'updatePassword'])->name('profile.change-password');
+    Route::post('/profile/upload-avatar', [GuruProfile::class, 'uploadAvatar'])->name('profile.upload-avatar');
+    Route::post('/profile/remove-avatar', [GuruProfile::class, 'removeAvatar'])->name('profile.remove-avatar');
+    Route::delete('/profile', [GuruProfile::class, 'deleteAccount'])->name('profile.delete');
 
     // Ujian (Exam) CRUD
     Route::resource('exams', GuruExamController::class);
@@ -120,8 +130,12 @@ Route::prefix('murid')
     // Profile
     Route::get('/profile', [MuridProfile::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [MuridProfile::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [MuridProfile::class, 'update'])->name('profile.update');
-    Route::put('/profile/password', [MuridProfile::class, 'updatePassword'])->name('profile.password');
+    Route::get('/profile/settings', [MuridProfile::class, 'settings'])->name('profile.settings');
+    Route::post('/profile', [MuridProfile::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [MuridProfile::class, 'updatePassword'])->name('profile.change-password');
+    Route::post('/profile/upload-avatar', [MuridProfile::class, 'uploadAvatar'])->name('profile.upload-avatar');
+    Route::post('/profile/remove-avatar', [MuridProfile::class, 'removeAvatar'])->name('profile.remove-avatar');
+    Route::delete('/profile', [MuridProfile::class, 'deleteAccount'])->name('profile.delete');
 
     // Ujian
     Route::get('/exams', [MuridExamController::class, 'index'])->name('exams.index');

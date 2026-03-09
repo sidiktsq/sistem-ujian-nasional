@@ -7,7 +7,7 @@
     <div class="card">
         <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 24px;">
             @if(auth()->user()->avatar)
-                <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+                <img src="{{ auth()->user()->avatar }}?t={{ time() }}" alt="{{ auth()->user()->name }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--card);">
             @else
                 <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(239,68,68,0.2); display: flex; align-items: center; justify-content: center; color: #F87171; font-size: 32px; font-weight: 700;">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}

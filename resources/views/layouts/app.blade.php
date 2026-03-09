@@ -376,7 +376,7 @@
     </div>
 
     <div class="sidebar-user">
-        <div class="avatar" style="background: 
+        <div class="avatar" style="position: relative; overflow: hidden; background: 
             @if($role === 'admin') rgba(239,68,68,.25)
             @elseif($role === 'guru') rgba(79,70,229,.25)
             @else rgba(5,150,105,.25)
@@ -387,7 +387,11 @@
             @else #34D399
             @endif
             ">
-            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+            @if(auth()->user()->avatar)
+                <img src="{{ auth()->user()->avatar }}?t={{ time() }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+            @else
+                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+            @endif
         </div>
         <div class="user-info">
             <div class="user-name">{{ auth()->user()->name }}</div>
@@ -409,7 +413,10 @@
                 <i class="fas fa-cog"></i> Pengaturan Sistem
             </a>
             <div class="nav-section">Pengaturan</div>
-            <a href="{{ route('admin.profile.show') }}" class="nav-item {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}" style="{{ request()->routeIs('admin.profile.*') ? 'color:#F87171; background:rgba(239,68,68,.15)' : '' }}">
+            <a href="{{ route('admin.profile.settings') }}" class="nav-item {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}" style="{{ request()->routeIs('admin.profile.*') ? 'color:#F87171; background:rgba(239,68,68,.15)' : '' }}">
+                <i class="fas fa-cog"></i> Pengaturan Akun
+            </a>
+            <a href="{{ route('admin.profile.show') }}" class="nav-item {{ request()->routeIs('admin.profile.show') ? 'active' : '' }}" style="{{ request()->routeIs('admin.profile.show') ? 'color:#F87171; background:rgba(239,68,68,.15)' : '' }}">
                 <i class="fas fa-user"></i> Profil Saya
             </a>
         @elseif($role === 'guru')
@@ -421,7 +428,10 @@
                 <i class="fas fa-file-alt"></i> Kelola Ujian
             </a>
             <div class="nav-section">Pengaturan</div>
-            <a href="{{ route('guru.profile.show') }}" class="nav-item {{ request()->routeIs('guru.profile.*') ? 'active' : '' }}" style="{{ request()->routeIs('guru.profile.*') ? 'color:#818CF8; background:rgba(79,70,229,.15)' : '' }}">
+            <a href="{{ route('guru.profile.settings') }}" class="nav-item {{ request()->routeIs('guru.profile.*') ? 'active' : '' }}" style="{{ request()->routeIs('guru.profile.*') ? 'color:#818CF8; background:rgba(79,70,229,.15)' : '' }}">
+                <i class="fas fa-cog"></i> Pengaturan Akun
+            </a>
+            <a href="{{ route('guru.profile.show') }}" class="nav-item {{ request()->routeIs('guru.profile.show') ? 'active' : '' }}" style="{{ request()->routeIs('guru.profile.show') ? 'color:#818CF8; background:rgba(79,70,229,.15)' : '' }}">
                 <i class="fas fa-user"></i> Profil Saya
             </a>
         @else
@@ -436,7 +446,10 @@
                 <i class="fas fa-trophy"></i> Nilai Saya
             </a>
             <div class="nav-section">Pengaturan</div>
-            <a href="{{ route('murid.profile.show') }}" class="nav-item {{ request()->routeIs('murid.profile.*') ? 'active' : '' }}" style="{{ request()->routeIs('murid.profile.*') ? 'color:#34D399; background:rgba(5,150,105,.15)' : '' }}">
+            <a href="{{ route('murid.profile.settings') }}" class="nav-item {{ request()->routeIs('murid.profile.*') ? 'active' : '' }}" style="{{ request()->routeIs('murid.profile.*') ? 'color:#34D399; background:rgba(5,150,105,.15)' : '' }}">
+                <i class="fas fa-cog"></i> Pengaturan Akun
+            </a>
+            <a href="{{ route('murid.profile.show') }}" class="nav-item {{ request()->routeIs('murid.profile.show') ? 'active' : '' }}" style="{{ request()->routeIs('murid.profile.show') ? 'color:#34D399; background:rgba(5,150,105,.15)' : '' }}">
                 <i class="fas fa-user"></i> Profil Saya
             </a>
         @endif
