@@ -71,5 +71,44 @@ class ResultController extends Controller
 
         return back()->with('success', 'Jawaban essay telah dinilai.');
     }
+
+    public function confirmResults(Exam $exam, ExamSession $session)
+    {
+        if ($exam->created_by !== Auth::id()) {
+            abort(403);
+        }
+
+        // Check if there are still pending essay answers
+        $hasPendingEssays = $session->answers()
+            ->whereHas('question', function($q) {
+                $q->where('question_type', 'essay');
+            })
+            ->where('grading_status', 'pending')
+            ->exists();
+
+        if ($hasPendingEssays) {
+            return back()->with('error', 'Masih ada jawaban essay yang belum dinilai.');
+        }
+
+        DB::transaction(function () use ($session) {
+            // Mark all remaining pending answers (usually multiple choice) as graded
+            $session->answers()->where('grading_status', 'pending')->update([
+                'grading_status' => 'graded',
+                'graded_at' => now(),
+            ]);
+
+            // Final recalc of session score just in case
+            $totalPoints = $session->exam->questions->sum('points');
+            $earnedPoints = $session->answers->sum('points_earned');
+            $score = $totalPoints > 0 ? round(($earnedPoints / $totalPoints) * 100, 2) : 0;
+
+            $session->update([
+                'score' => $score,
+                'earned_points' => $earnedPoints,
+            ]);
+        });
+
+        return back()->with('success', 'Nilai ujian telah dikonfirmasi dan dirilis ke murid.');
+    }
 }
 

@@ -32,7 +32,7 @@
                 </div>
                 
                 @if(auth()->user()->avatar && !str_contains(auth()->user()->avatar, 'google'))
-                <button type="button" class="btn btn-danger btn-sm" style="width: 100%; padding: 6px; font-size: 11px;" onclick="if(confirm('Hapus foto profil?')) document.getElementById('remove-avatar-form').submit()">
+                <button type="button" class="btn btn-danger btn-sm" style="width: 100%; padding: 6px; font-size: 11px;" onclick="confirmRemoveAvatar()">
                     <i class="fas fa-trash-alt"></i> Hapus Foto
                 </button>
                 @endif
@@ -95,8 +95,35 @@
                 <i class="fas fa-save"></i> Simpan
             </button>
         </form>
+    </div>    {{-- Password Change --}}
+    <div class="card" style="margin-bottom: 24px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 20px;">
+            <i class="fas fa-lock" style="color: var(--yellow); margin-right: 8px;"></i> Keamanan
+        </h3>
+        <form method="POST" action="{{ route('guru.profile.change-password') }}">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label class="form-label">Password Saat Ini</label>
+                <input type="password" name="current_password" class="form-control" required>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                    <label class="form-label">Password Baru</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Konfirmasi Password Baru</label>
+                    <input type="password" name="password_confirmation" class="form-control" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-secondary">
+                <i class="fas fa-key"></i> Perbarui Password
+            </button>
+        </form>
     </div>
-
 
 
     {{-- Danger Zone --}}
@@ -164,16 +191,16 @@ function previewImage(event) {
         // Validate file
         const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
         if (!validTypes.includes(file.type)) {
-            alert('Format file tidak didukung. Gunakan JPG, PNG, atau GIF.');
+            Swal.fire({ icon: 'error', title: 'Format Tidak Didukung', text: 'Gunakan JPG, PNG, atau GIF.', background: '#1E293B', color: '#F1F5F9' });
             event.target.value = '';
-            fileName.textContent = '';
+            fileName.textContent = 'Belum ada file dipilih';
             return;
         }
         
         if (file.size > 2048000) {
-            alert('Ukuran file terlalu besar. Maksimal 2MB.');
+            Swal.fire({ icon: 'error', title: 'File Terlalu Besar', text: 'Maksimal ukuran file adalah 2MB.', background: '#1E293B', color: '#F1F5F9' });
             event.target.value = '';
-            fileName.textContent = '';
+            fileName.textContent = 'Belum ada file dipilih';
             return;
         }
         
@@ -197,23 +224,42 @@ function validateAvatarForm() {
     const file = fileInput.files[0];
     
     if (!file) {
-        alert('Silakan pilih file terlebih dahulu.');
+        Swal.fire({ icon: 'warning', title: 'Perhatian', text: 'Silakan pilih file terlebih dahulu.', background: '#1E293B', color: '#F1F5F9' });
         return false;
     }
     
     // Double check validation
     const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
     if (!validTypes.includes(file.type)) {
-        alert('Format file tidak didukung. Gunakan JPG, PNG, atau GIF.');
+        Swal.fire({ icon: 'error', title: 'Format Tidak Didukung', text: 'Gunakan JPG, PNG, atau GIF.', background: '#1E293B', color: '#F1F5F9' });
         return false;
     }
     
     if (file.size > 2048000) {
-        alert('Ukuran file terlalu besar. Maksimal 2MB.');
+        Swal.fire({ icon: 'error', title: 'File Terlalu Besar', text: 'Maksimal ukuran file adalah 2MB.', background: '#1E293B', color: '#F1F5F9' });
         return false;
     }
     
     return true;
+}
+
+function confirmRemoveAvatar() {
+    Swal.fire({
+        title: 'Hapus Foto Profil?',
+        text: "Foto profil Anda akan dihapus permanen.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#EF4444',
+        cancelButtonColor: '#6B7280',
+        confirmButtonText: 'Ya, Hapus',
+        cancelButtonText: 'Batal',
+        background: '#1E293B',
+        color: '#F1F5F9'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('remove-avatar-form').submit();
+        }
+    });
 }
 
 function confirmDeleteAccount() {
@@ -227,7 +273,7 @@ function closeDeleteModal() {
 function validateDelete() {
     const confirmText = document.querySelector('input[name="confirm_text"]').value;
     if (confirmText !== 'HAPUS') {
-        alert('Anda harus mengetik "HAPUS" untuk mengkonfirmasi.');
+        Swal.fire({ icon: 'error', title: 'Konfirmasi Gagal', text: 'Anda harus mengetik "HAPUS" (huruf besar semua) untuk mengkonfirmasi.', background: '#1E293B', color: '#F1F5F9' });
         return false;
     }
     return true;

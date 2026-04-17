@@ -136,6 +136,31 @@
                         <span style="font-size:13px; color:var(--text-muted)">Total Poin:</span>
                         <span style="font-size:13px; font-weight:600">{{ $session->total_points }}</span>
                     </div>
+
+                    @php
+                        $isFullyGraded = !$session->answers->contains('grading_status', 'pending');
+                        $hasPendingEssays = $session->answers->where('grading_status', 'pending')->where('question.question_type', 'essay')->count() > 0;
+                    @endphp
+
+                    @if(!$isFullyGraded)
+                        <div style="margin-top:20px; padding-top:20px; border-top:1px solid var(--border)">
+                            @if($hasPendingEssays)
+                                <div style="padding:10px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.2); border-radius:8px; margin-bottom:12px; font-size:12px; color:#FCD34D">
+                                    <i class="fas fa-exclamation-triangle"></i> Selesaikan penilaian essay sebelum rilis nilai.
+                                </div>
+                            @endif
+                            <form method="POST" action="{{ route('guru.exams.results.confirm', [$exam, $session]) }}">
+                                @csrf
+                                <button type="submit" class="btn btn-primary" style="width:100%" {{ $hasPendingEssays ? 'disabled' : '' }}>
+                                    <i class="fas fa-paper-plane"></i> Konfirmasi & Rilis Nilai
+                                </button>
+                            </form>
+                        </div>
+                    @else
+                        <div style="margin-top:20px; padding:12px; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.2); border-radius:8px; text-align:center; font-size:13px; color:#34D399">
+                            <i class="fas fa-check-circle"></i> Nilai sudah dirilis
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

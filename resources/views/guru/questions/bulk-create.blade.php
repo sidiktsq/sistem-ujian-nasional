@@ -159,10 +159,24 @@ function toggleOptions(index) {
 }
 
 function clearAll() {
-    if (confirm('Apakah Anda yakin ingin menghapus semua soal?')) {
-        document.getElementById('questions_container').innerHTML = '';
-        questionCount = 0;
-    }
+    Swal.fire({
+        title: 'Hapus Semua?',
+        text: "Semua soal yang telah ditulis akan dihapus dari daftar ini.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#EF4444',
+        cancelButtonColor: '#6B7280',
+        confirmButtonText: 'Ya, Hapus Semua',
+        cancelButtonText: 'Batal',
+        background: '#1E293B',
+        color: '#F1F5F9'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('questions_container').innerHTML = '';
+            questionCount = 0;
+            updateQuestionNumbers();
+        }
+    });
 }
 
 // Tambahkan satu soal awal saat halaman dimuat

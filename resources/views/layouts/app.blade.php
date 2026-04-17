@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* Cache bust: {{ time() }} */
         :root {
@@ -409,9 +410,7 @@
             <a href="{{ route('admin.users.index') }}" class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" style="{{ request()->routeIs('admin.users.*') ? 'color:#F87171; background:rgba(239,68,68,.15)' : '' }}">
                 <i class="fas fa-users"></i> Kelola User
             </a>
-            <a href="{{ route('admin.system.index') }}" class="nav-item {{ request()->routeIs('admin.system.*') ? 'active' : '' }}" style="{{ request()->routeIs('admin.system.*') ? 'color:#F87171; background:rgba(239,68,68,.15)' : '' }}">
-                <i class="fas fa-cog"></i> Pengaturan Sistem
-            </a>
+
             <div class="nav-section">Pengaturan</div>
             <a href="{{ route('admin.profile.settings') }}" class="nav-item {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}" style="{{ request()->routeIs('admin.profile.*') ? 'color:#F87171; background:rgba(239,68,68,.15)' : '' }}">
                 <i class="fas fa-cog"></i> Pengaturan Akun

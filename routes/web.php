@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Admin\SystemController as AdminSystemController;
+
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboard;
 use App\Http\Controllers\Guru\ExamController as GuruExamController;
@@ -60,17 +60,13 @@ Route::prefix('admin')
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
     Route::post('/users/{user}/toggle-role', [AdminUserController::class, 'toggleRole'])->name('users.toggle-role');
     
-    // System Management
-    Route::get('/system', [AdminSystemController::class, 'index'])->name('system.index');
-    Route::post('/system/clear-cache', [AdminSystemController::class, 'clearCache'])->name('system.clear-cache');
-    Route::post('/system/migrate', [AdminSystemController::class, 'migrate'])->name('system.migrate');
+
     
     // Profile
     Route::get('/profile', [AdminProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/settings', [AdminProfileController::class, 'settings'])->name('profile.settings');
     Route::post('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
-    Route::put('/profile/password', [AdminProfileController::class, 'updatePassword'])->name('profile.change-password');
     Route::post('/profile/upload-avatar', [AdminProfileController::class, 'uploadAvatar'])->name('profile.upload-avatar');
     Route::post('/profile/remove-avatar', [AdminProfileController::class, 'removeAvatar'])->name('profile.remove-avatar');
     Route::delete('/profile', [AdminProfileController::class, 'deleteAccount'])->name('profile.delete');
@@ -115,6 +111,7 @@ Route::prefix('guru')
     // Hasil Ujian
     Route::get('exams/{exam}/results', [GuruResultController::class, 'index'])->name('exams.results.index');
     Route::get('exams/{exam}/results/{session}', [GuruResultController::class, 'show'])->name('exams.results.show');
+    Route::post('exams/{exam}/results/{session}/confirm', [GuruResultController::class, 'confirmResults'])->name('exams.results.confirm');
     Route::post('exams/{exam}/results/{session}/grade-essay/{answer}', [GuruResultController::class, 'gradeEssay'])->name('exams.results.grade-essay');
 });
 

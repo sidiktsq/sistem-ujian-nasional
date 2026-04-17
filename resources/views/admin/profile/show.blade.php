@@ -55,9 +55,7 @@
                     <a href="{{ route('admin.users.index') }}" class="btn" style="background: rgba(79,70,229,0.15); color: #818CF8; border: 1px solid rgba(79,70,229,0.3);">
                         <i class="fas fa-users"></i> Kelola User
                     </a>
-                    <a href="{{ route('admin.system.index') }}" class="btn" style="background: rgba(245,158,11,0.15); color: #FCD34D; border: 1px solid rgba(245,158,11,0.3);">
-                        <i class="fas fa-cog"></i> Pengaturan Sistem
-                    </a>
+
                 </div>
             </div>
         </div>

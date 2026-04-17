@@ -36,25 +36,6 @@ class ProfileController extends Controller
             ->with('success', 'Profil berhasil diperbarui');
     }
 
-    public function updatePassword(Request $request)
-    {
-        $data = $request->validate([
-            'current_password' => ['required'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-
-        $user = Auth::user();
-
-        if (!Hash::check($data['current_password'], $user->password)) {
-            return back()->withErrors(['current_password' => 'Password saat ini tidak sesuai']);
-        }
-
-        $user->update([
-            'password' => Hash::make($data['password'])
-        ]);
-
-        return back()->with('success', 'Password berhasil diperbarui');
-    }
 
     public function uploadAvatar(Request $request)
     {

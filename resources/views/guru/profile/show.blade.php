@@ -73,7 +73,20 @@
             </div>
         </div>
 
-
+        <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+            <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--guru-primary);">
+                <i class="fas fa-shield-alt"></i> Keamanan
+            </h4>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(79,70,229,0.05); padding: 16px; border-radius: 12px; border: 1px solid rgba(79,70,229,0.2);">
+                <div>
+                    <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">Ganti Password</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Disarankan untuk mengganti password secara berkala</div>
+                </div>
+                <a href="{{ route('guru.profile.settings') }}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-key"></i> Atur Keamanan
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

@@ -108,10 +108,10 @@
                                             <i class="fas fa-sync-alt"></i>
                                         </button>
                                     </form>
-                                    <form method="POST" action="{{ route('admin.users.destroy', $user) }}" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus user ini?')">
+                                    <form method="POST" action="{{ route('admin.users.destroy', $user) }}" style="display: inline;" class="delete-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">
+                                        <button type="button" class="btn btn-danger btn-sm btn-delete">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
@@ -128,4 +128,28 @@
         {{ $users->links() }}
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.btn-delete').forEach(button => {
+        button.addEventListener('click', function() {
+            const form = this.closest('form');
+            Swal.fire({
+                title: 'Hapus User?',
+                text: "Data user ini akan dihapus permanen dari sistem.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#EF4444',
+                cancelButtonColor: '#6B7280',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal',
+                background: '#1E293B',
+                color: '#F1F5F9'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 @endsection

@@ -44,9 +44,9 @@
                         <a href="{{ route('guru.exams.questions.edit', [$exam, $question]) }}" class="btn btn-secondary btn-sm" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <form method="POST" action="{{ route('guru.exams.questions.destroy', [$exam, $question]) }}" onsubmit="return confirm('Hapus soal ini?')">
+                        <form method="POST" action="{{ route('guru.exams.questions.destroy', [$exam, $question]) }}" class="delete-form">
                             @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
+                            <button type="button" class="btn btn-danger btn-sm btn-delete" title="Hapus">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -70,4 +70,28 @@
         @endforeach
     @endif
 </div>
+
+<script>
+    document.querySelectorAll('.btn-delete').forEach(button => {
+        button.addEventListener('click', function() {
+            const form = this.closest('form');
+            Swal.fire({
+                title: 'Hapus Soal?',
+                text: "Soal ini akan dihapus permanen dari ujian ini.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#EF4444',
+                cancelButtonColor: '#6B7280',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal',
+                background: '#1E293B',
+                color: '#F1F5F9'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 @endsection

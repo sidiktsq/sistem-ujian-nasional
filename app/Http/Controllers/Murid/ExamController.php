@@ -102,7 +102,6 @@ class ExamController extends Controller
                 $gradingStatus = 'pending'; // Default untuk semua
 
                 if ($question->question_type === 'multiple_choice') {
-                    $gradingStatus = 'graded'; // Multiple choice langsung di-grade
                     if ($answerValue) {
                         $optionId = $answerValue;
                         $correctOption = $question->options->where('is_correct', true)->first();
@@ -113,10 +112,10 @@ class ExamController extends Controller
                         }
                     }
                 } else {
-                    
                     $essayAnswer = $answerValue;
-                    $gradingStatus = 'pending';
                 }
+                
+                $gradingStatus = 'pending'; // All answers start as pending now
 
                 StudentAnswer::updateOrCreate(
                     [

@@ -44,7 +44,7 @@
         <div class="card" style="text-align:center; padding:40px; background:linear-gradient(to bottom, var(--dark2), rgba(16,185,129,0.05))">
             <h3 style="font-size:18px; font-weight:700; margin-bottom:12px">Selesai Mengerjakan?</h3>
             <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px">Pastikan semua pertanyaan telah dijawab sebelum mengumpulkan.</p>
-            <button type="submit" class="btn btn-green btn-lg" style="padding:14px 40px; font-size:16px" onclick="return confirm('Apakah Anda yakin ingin mengumpulkan jawaban?')">
+            <button type="button" id="btn-submit-exam" class="btn btn-green btn-lg" style="padding:14px 40px; font-size:16px">
                 <i class="fas fa-paper-plane"></i> KUMPULKAN JAWABAN
             </button>
         </div>
@@ -70,8 +70,16 @@
 
         if (distance < 0) {
             document.getElementById("timer").innerHTML = "00:00";
-            alert("Waktu ujian telah habis! Jawaban Anda akan otomatis dikumpulkan.");
-            document.getElementById("exam-form").submit();
+            Swal.fire({
+                title: 'Waktu Habis!',
+                text: 'Waktu ujian telah habis. Jawaban Anda akan otomatis dikumpulkan.',
+                icon: 'warning',
+                confirmButtonText: 'Oke',
+                allowOutsideClick: false,
+                confirmButtonColor: '#10B981',
+            }).then(() => {
+                document.getElementById("exam-form").submit();
+            });
             return;
         }
 
@@ -95,6 +103,27 @@
     window.onbeforeunload = function() {
         return "Apakah Anda yakin ingin keluar? Progress pengerjaan mungkin tidak tersimpan.";
     };
+
+    // Confirm submission with SweetAlert2
+    document.getElementById("btn-submit-exam").addEventListener('click', function() {
+        Swal.fire({
+            title: 'Kumpulkan Jawaban?',
+            text: "Pastikan semua pertanyaan telah dijawab sebelum mengumpulkan.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#10B981',
+            cancelButtonColor: '#6B7280',
+            confirmButtonText: 'Ya, Kumpulkan',
+            cancelButtonText: 'Batal',
+            background: '#1E293B',
+            color: '#F1F5F9'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.onbeforeunload = null;
+                document.getElementById("exam-form").submit();
+            }
+        });
+    });
 
     // Remove warning when submitting
     document.getElementById("exam-form").onsubmit = function() {
